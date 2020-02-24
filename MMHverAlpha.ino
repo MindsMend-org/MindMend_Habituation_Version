@@ -30,7 +30,7 @@ unsigned long Time = 0;
 //This Device Will Use Standard Vis spec Band. (450nmBlue or SuperBrightWhite LED) 3.5v 50mA use at least a 39R resistor.(Works Well with a 150R)R = ohm.  
 //EYE LED 
 //ATMega2560               01,02,03,04,05,06,07,08,09,10 //index = 0-9
-int LeftEyePinArray[10] = {22,24,26,28,30,32,34,36,38,40};//Critical to keep these 2 arrays the same length.
+int LeftEyePinArray[10] = {24,26,28,30,32,34,36,38,40,42};//Critical to keep these 2 arrays the same length.
 int RightEyePinArray[10] ={23,25,27,29,31,33,35,37,39,41};
 int EYEINDEX = 0;//LED_BUILTIN;//test using board led
 int RLight = RightEyePinArray[EYEINDEX];
@@ -74,8 +74,8 @@ pinMode(CoilH, OUTPUT);
 
 
 
-//Pin Mode: Set to Driver Mode for Mosfet Operation.
-EYEINDEX=-1;
+//Pin Mode: Set to Driver Mode for Mosfet Operation.(SETUP-LOOP)
+EYEINDEX=-0;//-1?--------------------------------------------------------------------
 for (int i = 0;i <= 9;i++){
 EYEINDEX +=1;
 RLight = RightEyePinArray[EYEINDEX];
@@ -106,11 +106,11 @@ void loop() {
 //P R I M E R
 //360 second Loop = 180ms once through time. 5.555555555555556hz
 //Coils
-EYEINDEX = -1;// to start.
+EYEINDEX = 0;// to start.
 int timeforloop = (1000/180) * 10;// 360; //=1sec/oncethroughtime*360 seconds = 2000 loops
 for (int i = 0; i <= timeforloop ; i++) {
 EYEINDEX +=1;
-if (EYEINDEX > ArraySIZE){
+if (EYEINDEX == ArraySIZE){
   EYEINDEX = 0;
   }
 RLight = RightEyePinArray[EYEINDEX];
@@ -158,15 +158,15 @@ delay(20.0);
 //B I N D I N G
 //Binding = 3.125ms = 8 Coil Setup. (Effector 840 seconds) 40hz
 //840 Seconds Binding Mode
-EYEINDEX = -1;//to start.
-timeforloop = 40 * 10;//840; // = 1 sec / once through = 25ms * looptime seconds
+EYEINDEX = 0;//to start.
+timeforloop = 40 * 210;//840; // = 1 sec / once through = 25ms * looptime seconds
 for (int Binding = 0;Binding <= timeforloop;Binding ++){
 EYEINDEX +=1;
-if (EYEINDEX > ArraySIZE){
+if (EYEINDEX == ArraySIZE){
   EYEINDEX = 0;
   }
 RLight = RightEyePinArray[EYEINDEX];
-LLight = LeftEyePinArray[EYEINDEX];
+LLight = LeftEyePinArray [EYEINDEX];
 digitalWrite(CoilA, HIGH); //1 on A       
 delay(0.125);
 digitalWrite(CoilH, LOW);  //8 off
